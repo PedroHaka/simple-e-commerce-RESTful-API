@@ -43,9 +43,7 @@ app.use('/orders', orderRoutes)
 
 mongoose.connect('mongodb+srv://pedrohaka94:' +
     process.env.MONGO_ATLAS_PW
-    + '@cluster0.qjnnh23.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-        useMongoClient: true
-    })
+    + '@cluster0.qjnnh23.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 
 //Here we deal with error handling on requests that didn't match
 //any of the routes we have created. In other words, requests with bad URL
