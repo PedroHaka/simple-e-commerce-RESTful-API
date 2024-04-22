@@ -1,3 +1,4 @@
+//First of all we import express and create our express app by using express().
 const express = require('express')
 const app = express()
 const morgan = require('morgan')//morgan is a log service,
@@ -6,6 +7,8 @@ const morgan = require('morgan')//morgan is a log service,
 const bodyParser = require('body-parser')//body parser is 
 //a tool that lets us parse our request bodies, as it is
 //not easily readable by default on node.js. 
+const mongoose = require('mongoose')//mongoose is a mongodb 
+//client that makes manipulating data super simple.
 
 
 //Here we deal with CORS issues by sending the apropriate headers on our requests/responses.
@@ -32,12 +35,14 @@ app.use(bodyParser.json())
 app.use('/products', productRoutes)
 app.use('/orders', orderRoutes)
 
+//Here we deal with error handling on requests that didn't match
+//any of the routes we have created. In other words, requests with bad URL
+//or requests using http methods not supported by our API.
 app.use((req, res, next) => {
     const error = new Error('Error 404: Resource Not Found.')
     error.status = 404
     next(error)
 })
-
 app.use((error, req, res, next) => {
     res.status(error.status || 500)
     res.json({
@@ -47,4 +52,6 @@ app.use((error, req, res, next) => {
     })
 })
 
+//Export this module, so we can use it in conjunction with other modules,
+//like server.js
 module.exports = app
