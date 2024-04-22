@@ -7,7 +7,7 @@ const morgan = require('morgan')
 //body parser is a tool that lets us parse our request bodies, as it is not easily 
 //readable by default on node.js. 
 const bodyParser = require('body-parser')
-//mongoose is a mongodb client that makes manipulating data super simple.
+//Mongoose is a mongodb ODM that makes manipulating data super simple.
 const mongoose = require('mongoose')
 
 //Here we deal with CORS issues by sending the apropriate headers on our requests/responses.
@@ -40,6 +40,12 @@ app.use(bodyParser.json())
 //This is the URL shown in our browser when using our API, not the backend path.
 app.use('/products', productRoutes)
 app.use('/orders', orderRoutes)
+
+mongoose.connect('mongodb+srv://pedrohaka94:' +
+    process.env.MONGO_ATLAS_PW
+    + '@cluster0.qjnnh23.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+        useMongoClient: true
+    })
 
 //Here we deal with error handling on requests that didn't match
 //any of the routes we have created. In other words, requests with bad URL
