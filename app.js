@@ -1,15 +1,14 @@
 //First of all we import express and create our express app by using express().
 const express = require('express')
 const app = express()
-const morgan = require('morgan')//morgan is a log service,
-//everytime a request is made to our server, it logs out in
+//morgan is a log service, everytime a request is made to our server, it logs out in
 //the terminal what kind of request was made.
-const bodyParser = require('body-parser')//body parser is 
-//a tool that lets us parse our request bodies, as it is
-//not easily readable by default on node.js. 
-const mongoose = require('mongoose')//mongoose is a mongodb 
-//client that makes manipulating data super simple.
-
+const morgan = require('morgan')
+//body parser is a tool that lets us parse our request bodies, as it is not easily 
+//readable by default on node.js. 
+const bodyParser = require('body-parser')
+//mongoose is a mongodb client that makes manipulating data super simple.
+const mongoose = require('mongoose')
 
 //Here we deal with CORS issues by sending the apropriate headers on our requests/responses.
 app.use((req, res, next) => {
@@ -25,13 +24,20 @@ app.use((req, res, next) => {
     next()
 })
 
+//Here we create our routes, or the URLs that our API supports. Yes, after the CORS handling.
+//Keep in mind that theses paths are from our Node.js app, in other words our back end,
+//and not the URLs shown in our browser when consuming our API.
 const productRoutes = require('./api/routes/products')
 const orderRoutes = require('./api/routes/orders')
 
+//Here we actually 'use' morgan and body-parser, allowing our app to now log requests, and
+//we can now also extract our request bodies in a json format, which is simpler to read. 
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+//Here we tell our app which URL matches each previously created route.
+//This is the URL shown in our browser when using our API, not the backend path.
 app.use('/products', productRoutes)
 app.use('/orders', orderRoutes)
 
