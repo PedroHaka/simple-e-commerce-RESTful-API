@@ -2,12 +2,13 @@
 const express = require('express')
 const app = express()
 //morgan is a log service, everytime a request is made to our server, it logs out in
-//the terminal what kind of request was made.
+//the terminal what kind of request was made. Great for development/debug.
 const morgan = require('morgan')
 //body parser is a tool that lets us parse our request bodies, as it is not easily 
 //readable by default on node.js. 
 const bodyParser = require('body-parser')
-//Mongoose is a mongodb ODM that makes manipulating data super simple.
+//Mongoose is a mongodb ODM that makes manipulating data super simple. Also allows for
+//object data model setup.
 const mongoose = require('mongoose')
 
 //Here we deal with CORS issues by sending the apropriate headers on our requests/responses.
@@ -26,7 +27,7 @@ app.use((req, res, next) => {
 
 //Here we create our routes, or the URLs that our API supports. Yes, after the CORS handling.
 //Keep in mind that theses paths are from our Node.js app, in other words our back end,
-//and not the URLs shown in our browser when consuming our API.
+//and not the URLs shown in our browser when consuming our API in the front end layer.
 const productRoutes = require('./api/routes/products')
 const orderRoutes = require('./api/routes/orders')
 
@@ -41,6 +42,8 @@ app.use(bodyParser.json())
 app.use('/products', productRoutes)
 app.use('/orders', orderRoutes)
 
+//MongoDB/Mongoose connection via connection string configuration, the password is 
+//stored in the 'MONGO_ATLAS_PW' environment variable, in nodemon.json file.
 mongoose.connect('mongodb+srv://pedrohaka94:' +
     process.env.MONGO_ATLAS_PW
     + '@cluster0.qjnnh23.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
@@ -63,5 +66,5 @@ app.use((error, req, res, next) => {
 })
 
 //Export this module, so we can use it in conjunction with other modules,
-//like server.js
+//like server.js.
 module.exports = app
