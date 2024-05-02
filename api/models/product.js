@@ -11,8 +11,8 @@ const productSchema = mongoose.Schema({
     
     //The other properties of our schema object are defined as
     //normal Javascript types, with a initial capital letter:
-    name: String,
-    price: Number
+    name: {type: String, required: true},
+    price: {type: Number, required: true}
 })
 
 //Now for exportation of our schema, use the mongoose model method,
